@@ -129,6 +129,54 @@ public class AccountTest {
 			
 			assertEquals(accountservice.depositAmount(accountNo, 500),1100);
 		}
+		
+		
+		//Trasnfer
+		@Test(expected = InvalidAccountNumberExcption.class)
+		public void whenTransferinvalidAccountNumberthrowException() throws InsufficientBalanceExcption,InvalidAccountNumberExcption {
+			//Account account = accountservice.createAccount(123, 600);
+			
+			int accountNo = 999;
+			Account donorAccount = new Account(123, 600);
+			Account receiverAccount = new Account(567, 600);
+			
+			when(accountRepositoty.searchAccount(123)).thenReturn(donorAccount);
+			when(accountRepositoty.searchAccount(567)).thenReturn(receiverAccount);
+			when(accountRepositoty.searchAccount(accountNo)).thenReturn(null);
+			
+			accountservice.fundTransfer(123, 999, 50);
+			
+		}
+		//Trasnfer
+		@Test(expected = InsufficientBalanceExcption.class)
+		public void whenTransferInsufficientbalancethrowException() throws InsufficientBalanceExcption,InvalidAccountNumberExcption {
+			//Account account = accountservice.createAccount(123, 600);
+			
+			int accountNo = 999;
+			Account donorAccount = new Account(123, 600);
+			Account receiverAccount = new Account(567, 600);
+			
+			when(accountRepositoty.searchAccount(123)).thenReturn(donorAccount);
+			when(accountRepositoty.searchAccount(567)).thenReturn(receiverAccount);
+			
+			accountservice.fundTransfer(123, 567, 10000);
+			
+		}
+		//Trasnfer
+		@Test
+		public void whenTransferGoodReturnListOfAccounts() throws InsufficientBalanceExcption,InvalidAccountNumberExcption {
+			//Account account = accountservice.createAccount(123, 600);
+			
+			int accountNo = 999;
+			Account donorAccount = new Account(123, 600);
+			Account receiverAccount = new Account(567, 600);
+			
+			when(accountRepositoty.searchAccount(123)).thenReturn(donorAccount);
+			when(accountRepositoty.searchAccount(567)).thenReturn(receiverAccount);
+			
+			assertNotNull(accountservice.fundTransfer(123, 567, 50));
+		}
+		
 	
 	
 }
